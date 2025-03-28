@@ -1,94 +1,138 @@
-<div class="row">
-	<div id="ilang">
-		<?= $this->session->flashdata('alert') ?>
-	</div>
-		<div class="col-12">
-			<div class="card my-4">
-				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-					<div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-						<h6 class="text-white text-capitalize ps-3">Galeri</h6>
+
+
+
+<!-- BEGIN: Modal Toggle -->
+<div class="text-left mt-8">
+	<a href="javascript:;" data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview"
+ 		class="btn btn-primary">Tambah Galeri</a>
+</div>
+<!-- END: Modal Toggle -->
+
+
+<div id="myalert" style="margin-top: 10px;">
+	<?php echo $this->session->flashdata('notifikasi', true)?>
+</div>
+<!-- BEGIN: Datatable -->
+<div class="intro-y box mt-3">
+    <div class="p-5">
+        <div class="preview">
+            <div class="overflow-x-auto">
+                <!-- DataTables Table -->
+                <table id="example1" class="table table-report table-report--bordered display datatable w-full">
+                    <thead class="bg-gray-100">
+                    <tr>
+				<th class="border-b-2 whitespace-no-wrap">NO </th>
+				<th class="border-b-2 whitespace-no-wrap">Judul</th>
+				<th class="border-b-2 whitespace-no-wrap">Deskripsi</th>
+				<th class="border-b-2 whitespace-no-wrap">Foto</th>
+				
+				<th class="border-b-2 text-center whitespace-no-wrap">ACTIONS</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php  $no = 1; foreach ($galeri as $cc) {?>
+			<tr>
+				<td class="text-left border-b"><?= $no; ?></td>
+				<td class="text-left border-b"><?= $cc['judul']; ?></td>
+				<td class="text-left border-b"><?= $cc['isifoto']; ?></td>
+				<td class="text-left border-b">
+					<img src="../assets/upload/galeri/<?= $cc['foto']; ?>" alt="Foto" width="100">
+				</td>
+
+				<td class="border-b w-5">
+					<div class="flex justify-center items-center">
+						
+						<a class="flex items-center text-danger delete-btn" href="javascript:;" 
+							data-foto="<?= $cc['foto']; ?>">
+							<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+						</a>
 					</div>
-				</div>
-                <form action="<?= base_url('admin/galeri/simpan') ?>" method="post" enctype='multipart/form-data'>
-                    <div class="modal-body p-4">
-                    	<div class="mb-3 input-group input-group-outline mb-3">
-                            <label for="judul" class="form-label">Judul</label>
-                            <input type="text" class="form-control" id="judul" name="judul" required>
-                        </div>
-                        <div class="mb-3 input-group input-group-outline mb-3">
-                            <label for="foto" class="form-label">Pilih Foto dengan ukuran (1 : 3)</label>
-                            <input type="file" class="form-control" id="foto" name="foto" required
-                                accept="image/png, image/gif, image/jpeg">
-                        </div>
-						<div class="mb-3 input-group input-group-outline mb-3">
-                            <label for="isifoto" class="form-label">Deskripsi</label>
-                            <input type="text" class="form-control" id="isifoto" name="isifoto" required>
-                        </div>
+				</td>
+			</tr>
+			<?php $no++; } ?>
+		</tbody>
+	</table>
+</div>
+<!-- BEGIN: Modal Content -->
+<div id="header-footer-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- BEGIN: Modal Header -->
+            <div class="modal-header">
+                <h2 class="font-medium text-base mr-auto">TAMBAH CARAOUSEL</h2>
+            </div> <!-- END: Modal Header -->
+            <form action="<?= base_url('admin/galeri/simpan') ?>" method="post" enctype="multipart/form-data">
+                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                    <div class="col-span-12">
+                        <label class="form-label">Judul</label>
+                        <input name="judul" id="modal-form-nama" type="text" class="form-control" placeholder=" masukkan foto" required>
                     </div>
-                    <div class="modal-footer p-4">
-						<button type="submit" class="btn btn-primary">Simpan</button>
+					<div class="col-span-12">
+						<label class="form-label">Deskripsi</label>
+						<textarea name="isifoto" id="modal-form-keterangan" class="form-control" rows="4" required></textarea>
 					</div>
-                </form>
-            </div>
+                    <div class="col-span-12">
+						<label class="form-label">Foto  dengan ukuran (1 : 3)</label>
+						<input name="foto" id="modal-form-foto" type="file" class="form-control" accept="image/*" required>
+						<img id="preview" src="" alt="Preview Foto" style="display:none; width: 100px; margin-top: 10px;">
+					</div>
+
+                    
+                </div>
+                <!-- BEGIN: Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">Batal</button>
+                    <button type="submit" class="btn btn-primary w-20">Simpan</button>
+                </div>
+                <!-- END: Modal Footer -->
+            </form>
         </div>
     </div>
-</div>
-<?php foreach ($galeri as $gg){ ?>
+</div> 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="row mt-5">
-	<div class="col-12">
-		<div class="card mt-4" data-animation="true">
-			<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-				<a class="d-block blur-shadow-image">
-					<img src="<?= base_url('assets/upload/galeri/'.$gg['foto']) ?>" class="img-fluid shadow border-radius-lg">
-				</a>
-				
-				<div class="colored-shadow"></div>
-			</div>
-			<div class="card-body text-center">
-				<div class="center mt-n6 mx-auto">
-					<!-- Tombol untuk membuka Modal -->
-					<a href="" class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="modal"
-						data-bs-target="#deleteModal<?= $gg['id_galeri']; ?>" data-bs-toggle="tooltip"
-						data-bs-placement="bottom" title="Hapus">
-						<i class="fas fa-trash-alt"></i>
-					</a>
+<script>
 
-					<!-- Modal Konfirmasi Hapus -->
-					<div class="modal fade" id="deleteModal<?= $gg['id_galeri']; ?>" tabindex="-1" role="dialog"
-						aria-labelledby="deleteModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
-									<button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									Apakah Anda yakin ingin menghapus Galeri<br><strong><?= $gg['judul'] ?></strong>?
-								</div>
-								<div class="modal-footer">
-									<!-- Tombol Batal (Tutup Modal) -->
-									<button type="button" class="btn bg-gradient-secondary"
-										data-bs-dismiss="modal">Tidak</button>
-									<!-- Tombol Hapus (Lanjutkan penghapusan) -->
-									<a href="<?= site_url('admin/galeri/delete_data/'.$gg['foto']); ?>"
-										class="btn bg-gradient-primary">
-										Ya, Hapus
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<h5 class="text-center font-weight-normal mt-3">
-					<a href="javascript:;"><?= $gg['judul'] ?></a>
-				</h5>
-                <p class="text-center"><a href="javascript:;"><?= $gg['isifoto'] ?></a></p>
-				<p class="text-center"><a href="javascript:;"><?= $gg['tanggal'] ?></a></p>
-			</div>
-			<hr class="dark horizontal my-0">
-		</div>
-	</div>
-</div>
-<?php } ?>
+
+
+    $(".delete-btn").click(function () {
+        var foto = $(this).data("foto"); 
+        
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data ini akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "<?= base_url('admin/galeri/delete_data/') ?>" + foto;
+            }
+        });
+
+    });
+</script>
+<script>
+    document.getElementById('modal-form-foto').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('preview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+<script>
+$(document).ready(function() {
+    setTimeout(function() {
+        $("#myalert").fadeOut("slow");
+    }, 3000); 
+});
+</script>

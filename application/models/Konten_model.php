@@ -2,23 +2,22 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Konten_model extends CI_Model {
-    public function update($namafoto) {
-        $data = array(
-            'judul' => $this->input->post('judul'),
-            'id_kategori' => $this->input->post('id_kategori'),
-            'keterangan' => $this->input->post('keterangan'),
-            'tanggal' => date('Y-m-d'),
-            'slug' => url_title($this->input->post('judul'), '-', true),
-            'foto' => $namafoto,
-        );
-        
-        $where = array('foto' => $this->input->post('nama_foto'));
-        $this->db->update('konten', $data, $where);
+    public function update_konten($id_konten, $data) {
+        $this->db->where('id_konten', $id_konten);
+        return $this->db->update('konten', $data);
     }
-    public function search($search){
-        $this->db->select('a.judul, a.slug, a.tanggal, a.foto, a.keterangan, b.nama_kategori, c.username');
+
+    public function get_all_konten() {
+        return $this->db->get('konten')->result_array();
+    }
+
+    public function get_konten_by_id($id_konten) {
+        return $this->db->get_where('konten', ['id_konten' => $id_konten])->row_array();
+    }
+
+       public function search($search){
+        $this->db->select('a.judul, a.slug, a.tanggal, a.foto, a.keterangan, c.username');
         $this->db->from('konten a');
-        $this->db->join('kategori b','a.id_kategori=b.id_kategori','left');
         $this->db->join('user c','a.username=c.username','left');
         $this->db->order_by('tanggal','DESC');
         $this->db->like('slug', $search);
@@ -32,9 +31,8 @@ class Konten_model extends CI_Model {
         }
     }
     public function recentpost() {
-        $this->db->select('a.judul, a.slug, a.tanggal, a.foto, a.keterangan, b.nama_kategori, c.username');
+        $this->db->select('a.judul, a.slug, a.tanggal, a.foto, a.keterangan, c.username');
         $this->db->from('konten a');
-        $this->db->join('kategori b', 'a.id_kategori = b.id_kategori', 'left');
         $this->db->join('user c', 'a.username = c.username', 'left');
         $this->db->order_by('a.id_konten', 'DESC');
         $this->db->limit(4);

@@ -22,11 +22,11 @@ class Caraousel extends CI_Controller {
     public function simpan(){
         $namafoto = date('YmdMis').'.jpg';
         $config['upload_path']       = 'assets/upload/caraousel';
-        $config['max_size'] = 500 * 1024;
+        $config['max_size'] = 2024 * 3024;
         $config['file_name']         = $namafoto;
         $config['allowed_types']     = '*';
         $this->load->library('upload', $config);
-        if($_FILES['foto']['size'] >= 500 * 1024){
+        if($_FILES['foto']['size'] >= 2024 * 3024){
             $this->session->set_flashdata('alert','
             <div class="alert alert-danger alert-dismissible text-white" role="alert">Ukuran foto terlalu besar</div>
             ');
@@ -41,7 +41,7 @@ class Caraousel extends CI_Controller {
         $cek = $this->db->get()->result_array();
         if($cek<>NULL){
             $this->session->set_flashdata('alert','
-            <div class="alert alert-success alert-dismissible text-white" role="alert">nama Caraousel sudah ada</div>
+            <div class="alert alert-danger alert-dismissible text-white" role="alert">gagal</div>
             ');
             redirect('admin/caraousel');
             
@@ -53,10 +53,8 @@ class Caraousel extends CI_Controller {
         );
         $this->db->insert('caraousel',$data);    
         $this->session->set_flashdata('alert','
-        <div class="alert alert-success mb-1" role="alert">
-        Berhasil menambahkan Caraousel
-        </div>
-        ');
+            <div class="alert alert-danger alert-dismissible text-white" role="alert">Berhasil menambah data</div>
+            ');
         redirect('admin/caraousel');
     }
     public function delete_data($id){
@@ -66,9 +64,9 @@ class Caraousel extends CI_Controller {
             }
         $where = array('foto' => $id);
         $this->db->delete('caraousel', $where);
-        $this->session->set_flashdata('alert', '<div class="alert alert-success alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="notika-icon notika-close"></i></span></button> Caraousel berhasil dihapus
-                            </div>');
+        $this->session->set_flashdata('alert','
+            <div class="alert alert-danger alert-dismissible text-white" role="alert">Berhasil Menghaous data</div>
+            ');
         redirect('admin/caraousel');
     }
 }

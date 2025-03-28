@@ -13,8 +13,8 @@ class Konfigurasi_model extends CI_Model {
             'instagram'       => $this->input->post('instagram'),
             'tiktok'          => $this->input->post('tiktok'),
             'alamat'          => $this->input->post('alamat'),
-            'email'           => $this->input->post('email'),
-
+            'youtube'           => $this->input->post('youtube'),
+            'whatsapp'           => $this->input->post('whatsapp'),
         );
        
         $this->db->update('konfigurasi', $data, $where);

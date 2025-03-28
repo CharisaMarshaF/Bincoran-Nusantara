@@ -1,63 +1,103 @@
-<footer class="ftco-footer ftco-section">
-	<div class="degree-footer-top"></div>
-	<div class="container">
-		<div class="row mb-5">
-			<div class="col-md">
-				<div class="ftco-footer-widget mb-4">
-					<h2 class="ftco-heading-2"><?= $konfig->judul_website; ?></h2>
-					<p><?= $konfig->profil_website; ?></p>
-					<ul class="ftco-footer-social list-unstyled mt-5">
-						<li class="ftco-animate"><a href="<?= $konfig->email; ?>"><span
-									class="fa fa-envelope"></span></a></li>
-						<li class="ftco-animate"><a href="<?= $konfig->facebook; ?>"><span
-									class="fa fa-facebook"></span></a></li>
-						<li class="ftco-animate"><a href="<?= $konfig->instagram; ?>"><span
-									class="fa fa-instagram"></span></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-md">
-				<div class="ftco-footer-widget mb-4 ml-md-4">
-					<h2 class="ftco-heading-2">Quick Links</h2>
-					<ul class="list-unstyled">
-						<li><a href="<?= base_url() ?>"><span class="fa fa-chevron-right mr-2"></span>Home</a></li>
-						<?php foreach ($kategori as $kate){ ?>
-						<li><a href="<?= base_url('home/kategori/'.$kate['id_kategori']) ?>"><span
-									class="fa fa-chevron-right mr-2"></span><?= $kate['nama_kategori'] ?></a></li>
-						<?php } ?>
-						<li><a href="<?= base_url('home/blog') ?>"><span
-									class="fa fa-chevron-right mr-2"></span>Blog</a></li>
-						<li><a href="<?= base_url('home/galeri/') ?>"><span
-									class="fa fa-chevron-right mr-2"></span>Galeri</a></li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="col-md">
-				<div class="ftco-footer-widget mb-4 ml-md-4">
-					<h2 class="ftco-heading-2">Recent Post</h2>
-					<?php foreach ($recentfooter as $recentfooter) { ?>
-					<ul class="list-unstyled">
-						<li><a href="<?= base_url('home/artikel/'.$recentfooter->slug) ?>"><span
-									class="fa fa-chevron-right mr-2"></span><?= $recentfooter->judul; ?></a></li>
-					</ul>
-					<?php } ?>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 text-center">
+<div id="footer" class="footer-main">
+        
+        <!-- end footer-news -->
+        <div class="footer-box pad-top-70">
+            <div class="container">
+                <div class="row ">
+                    <div class="footer-in-main">
+                        <div class="footer-logo">
+                            <div class="text-center">
+                                <img src="<?= base_url('assets/fotobin/')?>logo_text_right.png" alt="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="footer-box-a">
+                                <h3><?= $konfig->judul_website; ?></h3>
+                                <p><?= $konfig->profil_website; ?></p>
+                                <ul class="socials-box footer-socials pull-left">
+                                    <li>
+                                        <a href="<?= $konfig->facebook; ?>">
+                                            <div class="social-circle-border"><i class="fa-brands   fa-facebook"></i></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $konfig->instagram; ?>">
+                                            <div class="social-circle-border"><i class="fa-brands  fa-instagram"></i></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $konfig->youtube; ?>">
+                                            <div class="social-circle-border"><i class="fa-brands  fa-youtube"></i></div>
+                                        </>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $konfig->tiktok; ?>">
+                                            <div class="social-circle-border"><i class="fa-brands fa-tiktok"></i></div>
+                                        </a>
+                                    </li>
 
-				<p>
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					Copyright &copy;<script>
-						document.write(new Date().getFullYear());
-					</script> All rights reserved |  <i class="fa fa-heart"
-						aria-hidden="true"></i>  <a href="<?= base_url('home') ?>"
-						><?= $konfig->judul_website; ?></a>
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-				</p>
-			</div>
-		</div>
-	</div>
-</footer>
+                                    <li>
+                                        <a href="<?= $konfig->whatsapp; ?>">
+                                            <div class="social-circle-border"><i class="fa-brands  fa-whatsapp"></i></div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <!-- end footer-box-a -->
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="footer-box-b">
+                                <h3>Produk</h3>
+                                <?php $count = 0; foreach (array_slice($konten, 0, 4) as $uu) { ?>
+
+                                <ul>
+
+                                    <li><a href="<?= base_url("home/blog") ?>" ><?= $uu['judul'] ?></a></li>
+                                </ul>
+                                <?php $count++; } ?>
+                            </div>
+                            <!-- end footer-box-b -->
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="footer-box-c">
+                                <h3>Contact Us</h3>
+                                <p>
+                                    <i class="fa fa-map-signs" aria-hidden="true"></i>
+                                    <span><?= $konfig->alamat; ?></span>
+                                </p>
+                                
+                                </p>
+                                <p>
+                                    <i class="fa fa-mobile" aria-hidden="true"></i>
+                                    <span><a href="<?= $konfig->whatsapp; ?>">6281221231117</a></span>
+                                </p>
+                            </div>
+                            <!-- end footer-box-c -->
+                        </div>
+                        <!-- end col -->
+                        
+                    </div>
+                    <!-- end footer-in-main -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+            <div id="copyright" class="copyright-main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h6 class="copy-title"> Copyright &copy; PT BINCO RAN NUSANTARA <a href="#" target="_blank"></a> </h6>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+                <!-- end container -->
+            </div>
+            <!-- end copyright-main -->
+        </div>
+        <!-- end footer-box -->
+    </div>
+    <!-- end footer-main -->
