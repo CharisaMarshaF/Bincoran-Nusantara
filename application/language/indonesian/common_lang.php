@@ -1,0 +1,30 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['language'] = 'Bahasa';
+$lang['home'] = 'Beranda';
+$lang['about_us'] = 'Tentang kami';
+$lang['gallery'] = 'Galeri';
+$lang['produk'] = 'Produk';
+$lang['contact_us'] = 'Kontak kami';
+$lang['welcome'] = 'Selamat datang';
+$lang['hello'] = 'Halo, apa kabar?';
+$lang['about_title'] = 'PT Binco Ran Nusantara';
+$lang['about_paragraph'] = 'PT BINCO RAN NUSANTARA mengolah serabut kelapa menjadi tiga jenis bahan utama: Cocobristel, Cocofiber, dan Cocopeat. Dari bahan-bahan ini, lahirlah berbagai produk kreatif yang tidak hanya bermanfaat dalam kehidupan sehari-hari tetapi juga memiliki nilai estetika. <br><br>Beberapa produk yang dihasilkan antara lain Cocopot, Cocomest, Cocosheet, Coconet, Cocorope, Sapuku, dan Kuasku. Produk-produk ini memiliki berbagai kegunaan, mulai dari kebutuhan rumah tangga hingga dekorasi yang ramah lingkungan.';
+$lang['product_info_title'] = 'Binco Ran Nusantara <span class="ms-1"><i class="fas fa-check-circle text-success"></i></span>';
+$lang['product_info_description'] = 'Produk Produk';
+$lang['coconut_fiber_processing'] = 'Pengolahan Serabut Kelapa Menjadi Produk';
+$lang['produk_title'] = 'Produk ';
+$lang['produk_titlee'] = ' Utama';
+$lang['produk_description'] = 'Ketiga produk ini memiliki nilai guna tinggi dan mendukung pemanfaatan limbah kelapa';
+$lang['cocobristle_title'] = 'Cocobristle';
+$lang['cocobristle_description'] = 'Serat inti dari sabut kelapa yang kuat dan serbaguna.';
+$lang['cocofiber_title'] = 'Cocofiber';
+$lang['cocofiber_description'] = 'Serat panjang dari sabut kelapa yang berwarna kuning keemasan atau coklat, banyak digunakan untuk berbagai keperluan.';
+$lang['cocopeat_title'] = 'Cocopeat';
+$lang['cocopeat_description'] = 'Serbuk sabut kelapa yang digunakan sebagai media tanam organik dengan daya serap air tinggi, membantu mengurangi penggunaan tanah.';
+$lang['produk_pt_title'] = 'Produk  ';
+$lang['produk_pt_titlee'] = ' PT Binco Ran ';
+$lang['produk_pt_titleee'] = 'Nusantara';
+$lang['produk_pt_description'] = 'Berbagai produk kami yang dihasilkan dari pemanfaatan limbah kelapa';
+$lang['semua_produk'] = 'Semua Produk';

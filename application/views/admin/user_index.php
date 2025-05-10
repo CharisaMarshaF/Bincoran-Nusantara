@@ -139,6 +139,33 @@
         </div>
     </div>
 </div> 
+
+<style>
+  .swal2-confirm {
+    background-color: #3085d6 !important;
+    border: none;
+    box-shadow: none;
+  }
+
+  .swal2-cancel {
+    background-color: #d33 !important; 
+    border: none;
+    box-shadow: none;
+  }
+
+  .swal2-button {
+    display: inline-block !important;
+    padding: 10px 20px !important; 
+    font-size: 16px !important; 
+    border-radius: 5px !important; 
+    text-transform: none !important;
+    outline: none !important;
+  }
+
+  .swal2-container {
+    z-index: 9999 !important;
+  }
+</style>d
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>

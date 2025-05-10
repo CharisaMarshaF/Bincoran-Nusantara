@@ -54,6 +54,8 @@ class Konten extends CI_Controller {
         $data = array(
             'judul'          => $this->input->post('judul'),
             'keterangan'     => $this->input->post('keterangan'),
+            'harga'     => $this->input->post('harga'),
+
             'tanggal'        => date('Y-m-d'),
             'foto'           => $namafoto,
             'username'       => $this->session->userdata('username'),
@@ -84,56 +86,62 @@ class Konten extends CI_Controller {
     }
     
     
-    public function update() {
-        $id_konten = $this->input->post('id_konten');
-        $judul = $this->input->post('judul');
-        $keterangan = $this->input->post('keterangan');
-        $foto_lama = $this->input->post('nama_foto'); // Ambil foto lama dari input hidden
-        $tanggal = date('Y-m-d');
-        $slug = url_title($judul, '-', true);
-    
-        // Konfigurasi Upload
-        $config['upload_path']   = 'assets/upload/konten/';
+    public function update()
+{
+    // Ambil data dari form
+    $id_konten = $this->input->post('id_konten');
+    $judul = $this->input->post('judul');
+    $harga = $this->input->post('harga');
+
+    $keterangan = $this->input->post('keterangan');
+    $nama_foto_lama = $this->input->post('nama_foto'); // Nama foto lama yang ada di form
+
+   $foto_baru = $_FILES['foto']['name'];
+
+    if ($foto_baru) {
+        $config['upload_path'] = './assets/upload/konten/';
         $config['allowed_types'] = 'jpg|jpeg|png|gif';
-        $config['file_name']     = time() . '_' . $_FILES['foto']['name'];
-        $config['overwrite']     = false;
-    
+        $config['max_size'] = 2048;
+        $config['file_name'] = time() . '_' . $_FILES['foto']['name']; // Nama file baru
+
         $this->load->library('upload', $config);
-        $nama_foto_baru = $foto_lama; // Default tetap foto lama
-    
-        if (!empty($_FILES['foto']['name'])) { // Periksa apakah ada file baru
-            if ($this->upload->do_upload('foto')) {
-                $fileData = $this->upload->data();
-                $nama_foto_baru = 'assets/upload/konten/' . $fileData['file_name']; // Simpan path relatif
-                
-                // Hapus foto lama jika ada
-                if ($foto_lama && file_exists($foto_lama)) {
-                    unlink($foto_lama);
-                }
-            } else {
-                $this->session->set_flashdata('notifikasi', '<div class="bg-red-500 text-white p-3 rounded">' . $this->upload->display_errors() . '</div>');
-                redirect('admin/konten');
+
+        if ($this->upload->do_upload('foto')) {
+            $data_upload = $this->upload->data();
+            $foto_baru = $data_upload['file_name'];
+
+            if ($nama_foto_lama) {
+                unlink('./assets/upload/konten/' . $nama_foto_lama);
             }
+        } else {
+            // Jika gagal upload, tetap gunakan foto lama
+            $foto_baru = $nama_foto_lama;
         }
-    
-        // Update Data ke Database
-        $data = [
-            'judul'      => $judul,
-            'keterangan' => $keterangan,
-            'tanggal'    => $tanggal,
-            'slug'       => $slug,
-            'foto'       => $nama_foto_baru, // Simpan path foto baru jika diupdate
-        ];
-    
-        $this->db->where('id_konten', $id_konten);
-        $this->db->update('konten', $data);
-    
-        $this->session->set_flashdata('notifikasi', '
-        <div class="rounded-md px-5 py-4 mb-2 bg-green-500 text-black shadow-md">
-            ✅  Produk berhasil diupdate!
-        </div>
-        ');        redirect('admin/konten');
+    } else {
+        // Jika tidak ada file baru, gunakan foto lama
+        $foto_baru = $nama_foto_lama;
     }
+
+    // Update data produk
+    $data = [
+        'judul' => $judul,
+        'keterangan' => $keterangan,
+        'harga' => $harga,
+
+        'foto' => $foto_baru, // Foto baru atau lama
+        'tanggal' => date('Y-m-d') // Set tanggal update
+    ];
+
+    // Update data ke database (menggunakan query langsung)
+    $this->db->where('id_konten', $id_konten);
+    $this->db->update('konten', $data);
+
+    // Set flashdata untuk notifikasi
+    $this->session->set_flashdata('notifikasi', 'Data produk berhasil diperbarui.');
+    redirect('admin/konten'); // Redirect ke halaman yang sesuai setelah update
+}
+
+    
     
     
     

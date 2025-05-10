@@ -89,7 +89,7 @@
                             <div class="side-menu__title"> Galeri</div>
                         </a>
                     </li>
-                    
+                   
 
                     <li class="side-nav__devider my-6"></li>
                     <li>

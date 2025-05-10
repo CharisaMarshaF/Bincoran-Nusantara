@@ -10,9 +10,8 @@ class Galeri extends CI_Controller {
     }
 
 	public function index(){
-        $this->db->from('galeri');
+        $this->db->from('galeri'); 
         $galeri = $this->db->get()->result_array();
-        
         $data = array(
             'judul_halaman' => 'Halaman Galeri',
             'galeri'      => $galeri
