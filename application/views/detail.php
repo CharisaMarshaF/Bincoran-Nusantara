@@ -59,7 +59,22 @@ Page content START -->
 			
 				<!-- Title -->
 				<h1 class="mb-4"><?= $konten['judul'] ?></h1>
-
+				<!-- Price Item START -->
+				<ul class="list-inline mb-4">
+					<!-- Price -->
+					<li class="list-inline-item">
+						<input type="radio" class="btn-check" name="options" id="option1" checked>
+						<label class="btn btn-success-soft-check" for="option1">
+							<span class="mb-2 h6 fw-light">Harga</span>
+							<!-- Price and discount -->
+							<span class="d-flex align-items-center">
+								<span class="mb-0 h5 me-2 text-success"><?= "Rp " . number_format($konten['harga'], 0, ',', '.'); ?></span>
+			
+							</span>
+						</label>
+					</li>
+				</ul>
+				<!-- Price Item END -->
 				<!-- Content -->
 				<h4>Description</h4>
 				<p><?= nl2br($konten['keterangan']) ?></p>
