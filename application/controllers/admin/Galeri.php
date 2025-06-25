@@ -22,11 +22,11 @@ class Galeri extends CI_Controller {
     public function simpan(){
         $namafoto = date('YmdMis').'.jpg';
         $config['upload_path']       = 'assets/upload/galeri';
-        $config['max_size'] = 500 * 1024;
+        $config['max_size'] = 5 * 1024;
         $config['file_name']         = $namafoto;
         $config['allowed_types']     = '*';
         $this->load->library('upload', $config);
-        if($_FILES['foto']['size'] >= 500 * 1024){
+        if($_FILES['foto']['size'] >= 500 * 1024 ){
             $this->session->set_flashdata('alert','
             <div class="alert alert-danger alert-dismissible text-white" role="alert">Ukuran foto terlalu besar</div>
             ');
@@ -50,7 +50,6 @@ class Galeri extends CI_Controller {
             'judul'          => $this->input->post('judul'),
             'foto'           => $namafoto,
             'tanggal'        => date('Y-m-d'),
-            'isifoto'          => $this->input->post('isifoto'),
         );
         $this->db->insert('galeri',$data);    
         $this->session->set_flashdata('alert','
@@ -60,6 +59,7 @@ class Galeri extends CI_Controller {
         ');
         redirect('admin/galeri');
     }
+
     public function delete_data($id){
         $filename = FCPATH . '/assets/upload/galeri/'.$id;
             if(file_exists($filename)){

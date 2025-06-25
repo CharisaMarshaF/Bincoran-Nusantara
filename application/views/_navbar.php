@@ -32,8 +32,8 @@
 							class="<?= ($this->uri->segment(1) == 'home' && $this->uri->segment(2) == '') ? 'active' : '' ?>">
 							<a class="nav-link" href="<?= base_url('home') ?>"><?= $this->lang->line('home') ?></a>
 						</li>
-						<li class="<?= ($this->uri->segment(1) == 'about') ? 'active' : '' ?>">
-							<a class="nav-link" href="<?= base_url('home#about') ?>"><?= $this->lang->line('about_us') ?></a>
+						<li class="<?= ($this->uri->segment(1) == 'home') ? 'active' : '' ?>">
+							<a class="nav-link" href="<?= base_url('home/about/') ?>"><?= $this->lang->line('about_us') ?></a>
 						</li>
 						<li
 							class="<?= ($this->uri->segment(1) == 'home' && $this->uri->segment(2) == 'galeri') ? 'active' : '' ?>">
@@ -43,8 +43,9 @@
 							class="<?= ($this->uri->segment(1) == 'home' && $this->uri->segment(2) == 'blog') ? 'active' : '' ?>">
 							<a class="nav-link" href="<?= base_url('home/blog/') ?>"><?= $this->lang->line('produk') ?></a>
 						</li>
+						
 						<li class="<?= ($this->uri->segment(1) == 'contact') ? 'active' : '' ?>">
-							<a class="nav-link" href="<?= base_url('home#footer') ?>"><?= $this->lang->line('contact_us') ?></a>
+							<a class="nav-link" href="https://linktr.ee/sosialmediabi"><?= $this->lang->line('contact_us') ?></a>
 						</li>
 
 						<!-- Dropdown Language with Flags -->

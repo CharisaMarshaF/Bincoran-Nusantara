@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from eduport.webestica.com/shop-product-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 06:30:04 GMT -->
-
 <head>
 
 </head>
@@ -20,6 +17,29 @@
 
 		<!-- =======================
 Gallery START-->
+<style>
+	.masonry-grid {
+    column-count: 3; /* jumlah kolom di desktop */
+    column-gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .masonry-grid {
+        column-count: 2;
+    }
+}
+@media (max-width: 576px) {
+    .masonry-grid {
+        column-count: 1;
+    }
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+}
+
+</style>
 
 		<!-- =======================
 Gallery START-->
@@ -43,127 +63,31 @@ Gallery START-->
 							</span>
 						</h2>
 					</div>
-				</div>
-
-				<!-- Image gallery START -->
-				<div class="row g-4">
-
-					<?php
-function getImg($arr, $index) {
-	return isset($arr[$index]) ? base_url('assets/upload/galeri/' . $arr[$index]['foto']) : null;
-}
-
-$i = 0;
-$total = count($galeri);
-
-while ($i < $total):
-	$chunk = array_slice($galeri, $i, 7);
-?>
-
-					<!-- KIRI -->
-					<div class="col-lg-4">
-						<div class="row g-4">
-							<?php for ($j = 0; $j < 2; $j++): ?>
-							<div class="col-md-6">
-								<?php if ($img = getImg($chunk, $j)): ?>
-								<div class="card overflow-hidden h-100">
-									<div class="card-overlay-hover">
-										<img src="<?= $img ?>" class="rounded-3 w-100 h-100" alt="gallery image"
-											style="object-fit: cover;">
+					<div class="row g-4">
+						
+						<div class="masonry-grid">
+							<?php foreach ($galeri as $item): ?>
+								<div class="masonry-item">
+									<div class="card overflow-hidden position-relative">
+										<div class="card-overlay-hover">
+											<img src="<?= base_url('assets/upload/galeri/' . $item['foto']) ?>" 
+												class="rounded-3 w-100" 
+												alt="gallery image"
+												style="object-fit: cover; width: 100%; height: auto;">
+										</div>
+										<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
+										data-gallery="gallery" href="<?= base_url('assets/upload/galeri/' . $item['foto']) ?>">
+											<i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
+										</a>
 									</div>
-									<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
-										data-gallery="gallery" href="<?= $img ?>">
-										<i
-											class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
-									</a>
-								</div>
-								<?php endif; ?>
-							</div>
-							<?php endfor; ?>
-
-							<!-- Agak besar bawah -->
-							<div class="col-12">
-								<?php if ($img = getImg($chunk, 2)): ?>
-								<div class="card overflow-hidden h-100">
-									<div class="card-overlay-hover">
-										<img src="<?= $img ?>" class="rounded-3 w-100 h-100" alt="gallery image"
-											style="object-fit: cover;">
+									<!-- Judul foto -->
+									<div class="text-center small mt-2">
+										<?= $item['judul'] ?? '' ?>
 									</div>
-									<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
-										data-gallery="gallery" href="<?= $img ?>">
-										<i
-											class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
-									</a>
 								</div>
-								<?php endif; ?>
-							</div>
+							<?php endforeach; ?>
 						</div>
 					</div>
-
-					<!-- TENGAH -->
-					<div class="col-lg-4">
-						<?php if ($img = getImg($chunk, 3)): ?>
-						<div class="card overflow-hidden h-100">
-							<div class="card-overlay-hover">
-								<img src="<?= $img ?>" class="rounded-3 w-100 h-100" alt="gallery image"
-									style="object-fit: cover;">
-							</div>
-							<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
-								data-gallery="gallery" href="<?= $img ?>">
-								<i
-									class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
-							</a>
-						</div>
-						<?php endif; ?>
-					</div>
-
-					<!-- KANAN -->
-					<div class="col-lg-4">
-						<div class="row g-4">
-							<!-- Besar atas -->
-							<div class="col-12">
-								<?php if ($img = getImg($chunk, 4)): ?>
-								<div class="card overflow-hidden h-100">
-									<div class="card-overlay-hover">
-										<img src="<?= $img ?>" class="rounded-3 w-100 h-100" alt="gallery image"
-											style="object-fit: cover;">
-									</div>
-									<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
-										data-gallery="gallery" href="<?= $img ?>">
-										<i
-											class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
-									</a>
-								</div>
-								<?php endif; ?>
-							</div>
-
-							<?php for ($j = 5; $j <= 6; $j++): ?>
-							<div class="col-md-6">
-								<?php if ($img = getImg($chunk, $j)): ?>
-								<div class="card overflow-hidden h-100">
-									<div class="card-overlay-hover">
-										<img src="<?= $img ?>" class="rounded-3 w-100 h-100" alt="gallery image"
-											style="object-fit: cover;">
-									</div>
-									<a class="card-element-hover position-absolute w-100 h-100" data-glightbox
-										data-gallery="gallery" href="<?= $img ?>">
-										<i
-											class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-3 p-2 lh-1"></i>
-									</a>
-								</div>
-								<?php endif; ?>
-							</div>
-							<?php endfor; ?>
-						</div>
-					</div>
-
-					<?php
-	$i += 7;
-endwhile;
-?>
-				</div>
-
-				<!-- Image gallery END -->
 			</div>
 		</section>
 		<!-- =======================
@@ -179,6 +103,5 @@ Gallery START-->
 
 </body>
 
-<!-- Mirrored from eduport.webestica.com/shop-product-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 06:30:04 GMT -->
 
 </html>

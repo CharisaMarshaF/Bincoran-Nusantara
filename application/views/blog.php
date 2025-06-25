@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from eduport.webestica.com/course-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 06:29:43 GMT -->
 
 <head>
 	<?php require_once('_css.php')?>
@@ -42,72 +41,138 @@ Page Banner START -->
 		</section>
 		<!-- =======================
 Page Banner END -->
-
 		<!-- =======================
 Page content START -->
 		<section class="pt-0">
 			<div class="container">
 
-				<!-- Filter bar START -->				
+				<form action="<?= base_url('home/blog') ?>"
+					class="bg-light border p-4 rounded-3 my-4 z-index-9 position-relative" method="GET">
+					<div class="row g-3">
+						<div class="col-xl-11">
+							<input class="form-control me-1" type="text" placeholder="Search for products"
+								aria-label="Search" name="search"
+								value="<?= html_escape($this->input->get('search')) ?>">
+						</div>
+						<div class="col-xl-1">
+							<button type="submit" class="btn btn-primary mb-0 rounded z-index-1 w-100">
+								<i class="fas fa-search"></i>
+							</button>
+						</div>
+					</div>
+				</form>
 
-				<div class="row mt-3">
-					<!-- Main content START -->
-					<div class="col-12">
+				<!-- Filter bar END -->
 
-						<!-- Course Grid START -->
-						<div class="row g-4">
+				<!-- =======================
+Page content START -->
+<style>
+	.card.shadow {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+}
+.card.shadow:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+.card-img-top {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.card-body p {
+    font-size: 0.9rem;
+    color: #555;
+}
+.badge.harga-badge {
+    background-color: #eafbe7;
+    color: #2e7d32;
+    font-weight: 500;
+}
 
-							<!-- Card item START -->
-							<div class="row g-4" id="konten-list">
-								<?php foreach ($konten as $uu): ?>
-								<div class="col-sm-6 col-lg-4 col-xl-3">
-									<div class="card shadow h-100">
-										<!-- Image -->
-										<img src="<?= base_url('assets/upload/konten/') . $uu['foto'] ?>"
-											class="card-img-top" alt="course image">
-										<!-- Card body -->
-										<div class="card-body pb-0">
-											<!-- Title -->
-											<h5 class="card-title">
-												<a href="<?= base_url('home/detail/' . $uu['slug']) ?>"
-													class="stretched-link">
-													<?= $uu['judul'] ?>
-												</a>
-											</h5>
-											<hr>
-											<p class="mb-0"><?= substr($uu['keterangan'], 0, 100) . '...'; ?>
-											</p>
-										</div>
-										<!-- Card footer -->
-										<div class="card-footer pt-0 pb-3">
-											<hr>
-											<div class="d-flex justify-content-between">
-												<span class="h6 fw-light mb-0">
-													<i class="fas fa-tag text-success me-2"></i>
-													<?= "Rp " . number_format($uu['harga'], 0, ',', '.'); ?>
-												</span>
+</style>
+				<section class="pt-0">
+					<div class="container">
+
+						<!-- Filter bar START -->
+
+						<div class="row mt-3">
+							<!-- Main content START -->
+							<div class="col-12">
+
+								<!-- Course Grid START -->
+								<div class="row g-4">
+
+									<!-- Card item START -->
+									<div class="row g-4" id="konten-list">
+										<?php if (empty($konten)): ?>
+										<div class="col-12 text-center">
+											<div class="alert alert-warning">
+												<strong>Tidak ada produk</strong> yang ditemukan.
 											</div>
 										</div>
+										<?php else: ?>
+										<?php foreach ($konten as $uu): ?>
+										<div class="col-sm-6 col-lg-4 col-xl-3">
+											<div class="card shadow h-100">
+												<!-- Ambil gambar pertama -->
+												<?php
+													$gambar = (!empty($uu['fotos']) && isset($uu['fotos'][0]['foto']))
+														? base_url('assets/upload/konten/' . $uu['fotos'][0]['foto'])
+														: base_url('assets/images/default.jpg');
+												?>
+												<img src="<?= $gambar ?>" class="card-img-top" style="aspect-ratio: 3 / 4; object-fit: cover;" alt="course image">
+
+												<div class="card-body pb-0">
+													<h5 class="card-title">
+														<a href="<?= base_url('home/detail/' . $uu['slug']) ?>"
+															class="stretched-link">
+															<?= $uu['judul'] ?>
+														</a>
+													</h5>
+													<hr>
+													<p class="mb-0"><?= substr($uu['keterangan'], 0, 100) . '...'; ?>
+													</p>
+												</div>
+												<div class="card-footer pt-0 pb-3">
+													<hr>
+													<div class="d-flex justify-content-between">
+														<span class="h6 fw-light mb-0">
+															<i class="fas fa-tag text-success me-2"></i>
+															<?= 'Rp ' . number_format($uu['harga'], 2, ',', '.'); ?>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<?php endforeach; ?>
+										<?php endif; ?>
 									</div>
+
 								</div>
-								<?php endforeach; ?>
+								
+								<div class="col-12">
+									<nav class="mt-4 d-flex justify-content-center" aria-label="navigation">
+										<?= $pagination ?>
+									</nav>
+								</div>
+
+								<!-- Pagination END -->
+								<!-- Pagination END -->
 							</div>
-
-
-
-						</div>
-						<!-- Course Grid END -->
-
-						<!-- Pagination START -->
-						<!-- Pagination START -->
-						
-						<!-- Pagination END -->
+							<!-- Main content END -->
+						</div><!-- Row END -->
 					</div>
-					<!-- Main content END -->
-				</div><!-- Row END -->
-			</div>
-		</section>
-		<!-- =======================
+				</section>
+				<!-- =======================
 Page content END -->
 
 
@@ -131,6 +196,5 @@ Footer END -->
 
 </body>
 
-<!-- Mirrored from eduport.webestica.com/course-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 20 Mar 2025 06:29:44 GMT -->
 
 </html>

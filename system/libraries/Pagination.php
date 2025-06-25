@@ -512,10 +512,17 @@ class CI_Pagination {
 			$this->cur_page = $this->CI->uri->segment($this->uri_segment);
 
 			// Remove any specified prefix/suffix from the segment.
-			if ($this->prefix !== '' OR $this->suffix !== '')
-			{
-				$this->cur_page = str_replace(array($this->prefix, $this->suffix), '', $this->cur_page);
-			}
+			// Remove any specified prefix/suffix from the segment.
+            if ($this->prefix !== '' OR $this->suffix !== '')
+            {
+                // PERBAIKAN: Pastikan $this->cur_page adalah string.
+                // Jika null, itu akan diubah menjadi string kosong agar str_replace tidak error.
+                if (!is_string($this->cur_page)) {
+                    $this->cur_page = (string) $this->cur_page;
+                }
+                
+                $this->cur_page = str_replace(array($this->prefix, $this->suffix), '', $this->cur_page);
+            }
 		}
 		else
 		{
@@ -523,16 +530,17 @@ class CI_Pagination {
 		}
 
 		// If something isn't quite right, back to the default base page.
-		if ( ! ctype_digit($this->cur_page) OR ($this->use_page_numbers && (int) $this->cur_page === 0))
-		{
-			$this->cur_page = $base_page;
-		}
-		else
-		{
-			// Make sure we're using integers for comparisons later.
-			$this->cur_page = (int) $this->cur_page;
-		}
-
+        // PERBAIKAN: Pastikan $this->cur_page adalah string sebelum dilewatkan ke ctype_digit()
+        // agar tidak memicu E_DEPRECATED di PHP 8.1+ jika nilainya null.
+        if ( ! ctype_digit((string) $this->cur_page) OR ($this->use_page_numbers && (int) $this->cur_page === 0))
+        {
+            $this->cur_page = $base_page;
+        }
+        else
+        {
+            // Make sure we're using integers for comparisons later.
+            $this->cur_page = (int) $this->cur_page;
+        }
 		// Is the page number beyond the result range?
 		// If so, we show the last page.
 		if ($this->use_page_numbers)

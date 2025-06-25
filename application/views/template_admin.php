@@ -89,6 +89,12 @@
                             <div class="side-menu__title"> Galeri</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="<?= site_url('admin/tiktok') ?>" class="side-menu <?php if($menu=='tiktok'){ echo"side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="skip-forward"></i> </div>
+                            <div class="side-menu__title"> Tiktok</div>
+                        </a>
+                    </li>
                    
 
                     <li class="side-nav__devider my-6"></li>

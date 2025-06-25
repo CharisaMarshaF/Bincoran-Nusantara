@@ -6,148 +6,197 @@ class Konten extends CI_Controller {
         parent::__construct();
         $this->load->model('Konten_model');
         if($this->session->userdata('level')==NULL){
-			redirect('auth');
+            redirect('auth');
         }    
     }
 
-	public function index(){
-        
-        $this->db->from('konten a');
-        $this->db->join('user c','a.username=c.username','left');
-
-        $this->db->order_by('tanggal','DESC');
-        $konten = $this->db->get()->result_array();
+    public function index(){
+        $konten = $this->Konten_model->get_all_konten(); // Use model to get all content with photos
         $data = array(
             'judul_halaman' => 'Halaman Konten',
             'konten'        => $konten
         );
-
-		$this->template->load('template_admin','admin/konten_index',$data);
-	}
-    public function simpan(){
-        $namafoto = date('YmdMis').'.jpg';
-        $config['upload_path']       = 'assets/upload/konten';
-        $config['max_size'] = 500 * 1024;
-        $config['file_name']         = $namafoto;
-        $config['allowed_types']     = '*';
-        $this->load->library('upload', $config);
-        if($_FILES['foto']['size'] >= 500 * 1024){
-            $this->session->set_flashdata('alert','
-            <div class="alert alert-danger alert-dismissible text-white" role="alert">Ukuran foto terlalu besar</div>
-            ');
-            redirect('admin/konten');
-        } elseif(!$this->upload->do_upload('foto')){
-            $error = array('error' => $this->upload->display_errors());
-        }else{
-            $data  = array('upload_data' => $this->upload->data());
-        }
-        $this->db->from('konten');
-        $this->db->where('judul',$this->input->post('judul'));
-        $cek = $this->db->get()->result_array();
-        if($cek<>NULL){
-            $this->session->flashdata('notifikasi','
-            <div class="alert alert-success alert-dismissible text-white" role="alert">nama kategoori sudah ada</div>
-            ');
-            redirect('admin/konten');
-            
-        }
-        $data = array(
-            'judul'          => $this->input->post('judul'),
-            'keterangan'     => $this->input->post('keterangan'),
-            'harga'     => $this->input->post('harga'),
-
-            'tanggal'        => date('Y-m-d'),
-            'foto'           => $namafoto,
-            'username'       => $this->session->userdata('username'),
-            'slug'           => str_replace(' ','-',$this->input->post('judul')),
-        );
-        $this->db->insert('konten',$data);       
-        $this->session->set_flashdata('notifikasi', '
-        <div class="rounded-md px-5 py-4 mb-2 bg-green-500 text-black shadow-md">
-            ✅  Produk berhasil disimpan!
-        </div>
-        ');
-        redirect('admin/konten');
-
+        $this->template->load('template_admin','admin/konten_index',$data);
     }
-    public function delete_data($id){
-        $filename = FCPATH . '/assets/upload/konten/'.$id;
+
+public function simpan(){
+    $this->load->library('upload');
+
+    $data_konten = array(
+        'judul'      => $this->input->post('judul'),
+        'keterangan' => $this->input->post('keterangan'),
+        'harga'      => $this->input->post('harga'),
+        'tanggal'    => date('Y-m-d'),
+        'username'   => $this->session->userdata('username'),
+        'slug'       => str_replace(' ','-', $this->input->post('judul')),
+    );
+
+    // Simpan data konten dan ambil ID-nya
+    $this->db->insert('konten', $data_konten);
+    $id_konten = $this->db->insert_id();
+
+    // Cek jika ada file foto diupload
+    if (!empty($_FILES['foto']['name'][0])) {
+        $filesCount = count($_FILES['foto']['name']);
+
+        for ($i = 0; $i < $filesCount; $i++) {
+            $_FILES['userfile']['name']     = $_FILES['foto']['name'][$i];
+            $_FILES['userfile']['type']     = $_FILES['foto']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['foto']['tmp_name'][$i];
+            $_FILES['userfile']['error']    = $_FILES['foto']['error'][$i];
+            $_FILES['userfile']['size']     = $_FILES['foto']['size'][$i];
+
+            // Nama file baru
+            $namafoto = date('YmdHis') . '_' . $i . '.' . pathinfo($_FILES['foto']['name'][$i], PATHINFO_EXTENSION);
+
+            $config['upload_path']   = 'assets/upload/konten';
+            $config['max_size']      = 5 * 1024; // 5MB dalam KB
+            $config['file_name']     = $namafoto;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg|webp';
+
+            // Pastikan folder upload bisa ditulis
+            if (!is_dir($config['upload_path'])) {
+                mkdir($config['upload_path'], 0777, true);
+            }
+
+            $this->upload->initialize($config);
+
+            // Debug tipe file
+            log_message('debug', 'Upload: name=' . $_FILES['userfile']['name'] . ', type=' . $_FILES['userfile']['type']);
+
+            // Lakukan upload
+            if (!$this->upload->do_upload('userfile')) {
+                $error_msg = $this->upload->display_errors();
+                log_message('error', 'Upload failed: ' . $error_msg);
+
+                $this->session->set_flashdata('alert', '
+                <div class="alert alert-danger alert-dismissible text-white" role="alert">
+                    Gagal mengunggah foto ' . $_FILES['userfile']['name'] . ': ' . $error_msg . '
+                </div>
+                ');
+                // Opsional: Hapus data konten kalau gagal
+                // $this->db->delete('konten', array('id_konten' => $id_konten));
+                redirect('admin/konten');
+            } else {
+                $data_foto = array(
+                    'id_konten' => $id_konten,
+                    'foto'      => $namafoto
+                );
+                $this->Konten_model->save_konten_foto($data_foto);
+            }
+        }
+    }
+
+    $this->session->set_flashdata('notifikasi', '
+    <div class="rounded-md px-5 py-4 mb-2 bg-green-500 text-black shadow-md">
+        ✅ Produk berhasil disimpan!
+    </div>
+    ');
+    redirect('admin/konten');
+}
+
+    public function delete_data($id_konten){
+        // Get all photos associated with this content
+        $fotos = $this->Konten_model->get_konten_fotos($id_konten);
+        
+        // Delete photo files from the server
+        foreach ($fotos as $foto) {
+            $filename = FCPATH . 'assets/upload/konten/' . $foto['foto'];
             if(file_exists($filename)){
-                unlink("./assets/upload/konten/".$id);
+                unlink($filename);
             }
-        $where = array('foto' => $id);
-        $this->db->delete('konten', $where);
+        }
+
+        // Delete photo records from binocoran_konten_foto table
+        $this->Konten_model->delete_konten_fotos_by_konten_id($id_konten);
+
+        // Delete content record from konten table
+        $this->db->where('id_konten', $id_konten);
+        $this->db->delete('konten');
+
         $this->session->set_flashdata('notifikasi', '
         <div class="rounded-md px-5 py-4 mb-2 bg-green-500 text-black shadow-md">
-            ✅  Produk berhasil dihapus!
+            ✅ Produk berhasil dihapus!
         </div>
         ');
         redirect('admin/konten');
     }
     
-    
-    public function update()
-{
-    // Ambil data dari form
-    $id_konten = $this->input->post('id_konten');
-    $judul = $this->input->post('judul');
-    $harga = $this->input->post('harga');
-
-    $keterangan = $this->input->post('keterangan');
-    $nama_foto_lama = $this->input->post('nama_foto'); // Nama foto lama yang ada di form
-
-   $foto_baru = $_FILES['foto']['name'];
-
-    if ($foto_baru) {
-        $config['upload_path'] = './assets/upload/konten/';
-        $config['allowed_types'] = 'jpg|jpeg|png|gif';
-        $config['max_size'] = 2048;
-        $config['file_name'] = time() . '_' . $_FILES['foto']['name']; // Nama file baru
-
-        $this->load->library('upload', $config);
-
-        if ($this->upload->do_upload('foto')) {
-            $data_upload = $this->upload->data();
-            $foto_baru = $data_upload['file_name'];
-
-            if ($nama_foto_lama) {
-                unlink('./assets/upload/konten/' . $nama_foto_lama);
+    // New function to delete a single photo
+    public function delete_single_photo($id_foto) {
+        $photo_data = $this->db->get_where('konten_foto', ['id' => $id_foto])->row_array();
+        if ($photo_data) {
+            $filename = FCPATH . 'assets/upload/konten/' . $photo_data['foto'];
+            if (file_exists($filename)) {
+                unlink($filename);
             }
+            $this->Konten_model->delete_konten_foto_by_id($id_foto);
+            echo json_encode(['status' => 'success']); // Respond for AJAX
         } else {
-            // Jika gagal upload, tetap gunakan foto lama
-            $foto_baru = $nama_foto_lama;
+            echo json_encode(['status' => 'error', 'message' => 'Photo not found']);
         }
-    } else {
-        // Jika tidak ada file baru, gunakan foto lama
-        $foto_baru = $nama_foto_lama;
     }
 
-    // Update data produk
-    $data = [
-        'judul' => $judul,
-        'keterangan' => $keterangan,
-        'harga' => $harga,
 
-        'foto' => $foto_baru, // Foto baru atau lama
-        'tanggal' => date('Y-m-d') // Set tanggal update
-    ];
+    public function update() {
+        $this->load->library('upload');
+        $id_konten = $this->input->post('id_konten');
+        $judul = $this->input->post('judul');
+        $harga = $this->input->post('harga');
+        $keterangan = $this->input->post('keterangan');
 
-    // Update data ke database (menggunakan query langsung)
-    $this->db->where('id_konten', $id_konten);
-    $this->db->update('konten', $data);
+        // Update content details
+        $data_konten = [
+            'judul'      => $judul,
+            'keterangan' => $keterangan,
+            'harga'      => $harga,
+            'tanggal'    => date('Y-m-d')
+        ];
+        $this->db->where('id_konten', $id_konten);
+        $this->db->update('konten', $data_konten);
 
-    // Set flashdata untuk notifikasi
-    $this->session->set_flashdata('notifikasi', 'Data produk berhasil diperbarui.');
-    redirect('admin/konten'); // Redirect ke halaman yang sesuai setelah update
+        // Handle new photo uploads
+        if (!empty($_FILES['foto']['name'][0])) {
+            $filesCount = count($_FILES['foto']['name']);
+            for ($i = 0; $i < $filesCount; $i++) {
+                $_FILES['userfile']['name']     = $_FILES['foto']['name'][$i];
+                $_FILES['userfile']['type']     = $_FILES['foto']['type'][$i];
+                $_FILES['userfile']['tmp_name'] = $_FILES['foto']['tmp_name'][$i];
+                $_FILES['userfile']['error']    = $_FILES['foto']['error'][$i];
+                $_FILES['userfile']['size']     = $_FILES['foto']['size'][$i];
+    log_message('debug', 'File type: '.$_FILES['userfile']['type']);
+
+                $namafoto = date('YmdHis') . '_' . uniqid() . '.' . pathinfo($_FILES['foto']['name'][$i], PATHINFO_EXTENSION);
+                $config['upload_path']      = 'assets/upload/konten';
+                $config['max_size']         = 5 * 1024;
+                $config['file_name']        = $namafoto;
+                $config['allowed_types']    = 'gif|jpg|png|jpeg|webp';
+
+                $this->upload->initialize($config);
+
+                if($_FILES['userfile']['size'] >= 5 * 1024 * 1024){
+                    $this->session->set_flashdata('alert','
+                    <div class="alert alert-danger alert-dismissible text-white" role="alert">Ukuran foto terlalu besar untuk file ' . $_FILES['userfile']['name'] . '</div>
+                    ');
+                    
+                    redirect('admin/konten');
+                } elseif(!$this->upload->do_upload('userfile')){
+                    $error = array('error' => $this->upload->display_errors());
+                    $this->session->set_flashdata('alert','
+                    <div class="alert alert-danger alert-dismissible text-white" role="alert">Gagal mengunggah foto ' . $_FILES['userfile']['name'] . ': ' . $this->upload->display_errors() . '</div>
+                    ');
+                    redirect('admin/konten');
+                } else {
+                    $data_foto = array(
+                        'id_konten' => $id_konten,
+                        'foto'      => $namafoto
+                    );
+                    $this->Konten_model->save_konten_foto($data_foto);
+                }
+            }
+        }
+
+        $this->session->set_flashdata('notifikasi', 'Data produk berhasil diperbarui.');
+        redirect('admin/konten');
+    }
 }
-
-    
-    
-    
-    
-
-    
-    
-}
-    
-

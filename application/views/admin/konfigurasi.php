@@ -26,11 +26,7 @@
                                             <input type="text" id="profil_website" name="profil_website" value="<?= $konfig->profil_website; ?>" 
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         </div>
-                                        <div class="mb-4">
-                                            <label for="whatsapp" class="block text-sm font-medium text-gray-700">whatsapp</label>
-                                            <input type="text" id="whatsapp" name="whatsapp" value="<?= $konfig->whatsapp; ?>" 
-                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                        </div>
+                                       
                                        
                                         <div class="mb-4">
                                             <label for="instagram" class="block text-sm font-medium text-gray-700">instagram</label>
@@ -58,12 +54,6 @@
                                                 class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         </div>
                                 
-                                        <div class="mb-4">
-                                            <label for="whatsapp" class="block text-sm font-medium text-gray-700">whatsapp</label>
-                                            <input type="text" id="whatsapp" name="whatsapp" value="<?= $konfig->whatsapp; ?>" 
-                                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                        </div>
-
                                         <div class="mb-4">
                                             <label for="whatsapp" class="block text-sm font-medium text-gray-700">YouTube</label>
                                             <input type="text" id="youtube" name="youtube" value="<?= $konfig->youtube; ?>" 

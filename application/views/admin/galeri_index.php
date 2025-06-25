@@ -23,7 +23,6 @@
                     <tr>
 				<th class="border-b-2 whitespace-no-wrap">NO </th>
 				<th class="border-b-2 whitespace-no-wrap">Judul</th>
-				<th class="border-b-2 whitespace-no-wrap">Deskripsi</th>
 				<th class="border-b-2 whitespace-no-wrap">Foto</th>
 				
 				<th class="border-b-2 text-center whitespace-no-wrap">ACTIONS</th>
@@ -34,7 +33,6 @@
 			<tr>
 				<td class="text-left border-b"><?= $no; ?></td>
 				<td class="text-left border-b"><?= $cc['judul']; ?></td>
-				<td class="text-left border-b"><?= $cc['isifoto']; ?></td>
 				<td class="text-left border-b">
 					<img src="../assets/upload/galeri/<?= $cc['foto']; ?>" alt="Foto" width="100">
 				</td>
@@ -67,10 +65,7 @@
                         <label class="form-label">Judul</label>
                         <input name="judul" id="modal-form-nama" type="text" class="form-control" placeholder=" masukkan foto" required>
                     </div>
-					<div class="col-span-12">
-						<label class="form-label">Deskripsi</label>
-						<textarea name="isifoto" id="modal-form-keterangan" class="form-control" rows="4" required></textarea>
-					</div>
+					
                     <div class="col-span-12">
 						<label class="form-label">Foto  dengan ukuran (1 : 3)</label>
 						<input name="foto" id="modal-form-foto" type="file" class="form-control" accept="image/*" required>
